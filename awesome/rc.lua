@@ -1,5 +1,6 @@
 -- luarocks libraries
 pcall(require, "luarocks.loader")
+local run_shell = require("awesome-wm-widgets.run-shell.run-shell")
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
@@ -167,25 +168,22 @@ screen.connect_signal("property::geometry", set_wallpaper)
 --connman.gui_client = "wicd"
 -- This is used later as the default terminal and editor to run.
 
+
+-- separator
+sprtr = wibox.widget.textbox()
+sprtr:set_text("     ")
+
 -- Setup battery widget
-local battery_widget = require("battery-widget")
-local bat0 = battery_widget {
-  ac = "AC0",
-  adapter = "BAT0",
-  ac_prefix = {
-    { 25, " ░ 🔌 "},
-    { 50, " ▒ 🔌 "},
-    { 75, " ▓ 🔌 "},
-    {100, " █ 🔌 "}
-  },
-  battery_prefix = {
-    { 25, " ░ 🔋 "},
-    { 50, " ▒ 🔋 "},
-    { 75, " ▓ 🔋 "},
-    {100, " █ 🔋 "}
-  },
-  widget_text = "${color_on}${AC_BAT}${color_off}${percent}% | "
-}
+local batteryarc = require("awesome-wm-widgets.batteryarc-widget.batteryarc")
+local batteryarc_widget = batteryarc({
+  show_current_level = true,
+  arc_thickness = 1,
+  main_color = '#ff5200',
+  bg_color = '#00263b',
+  low_level_color = '#6f0000',
+  medium_level_color = '#00263b',
+  charging_color = '#00a1ab',
+})
 
 -- Network widget
 local net_widgets = require("net_widgets")
@@ -198,8 +196,41 @@ if screen.count() == 2 then
 end
 
 -- Volume widget
-local volume_control = require("volume-control")
-volumecfg = volume_control({})
+local volumebar = require("awesome-wm-widgets.volumebar-widget.volumebar")
+local volumebar_widget = volumebar({
+  main_color = '#ff5200',
+  mute_color = '#6f0000',
+  width = 80,
+  shape = 'rounded_bar',
+  margins = 8
+})
+
+-- Spotify widget
+local spotify = require("awesome-wm-widgets.spotify-widget.spotify")
+local spotify_widget = spotify({
+  play_icon = '/usr/share/spotify/icons/spotify_icon.ico',
+  pause_icon = '/usr/share/spotify/icons/spotify_icon.ico',
+})
+
+-- Brightness widget
+local brightness = require("awesome-wm-widgets.brightness-widget.brightness")
+local brightness_widget = brightness({
+  get_brightness_cmd = 'light -G',
+  inc_brightness_cmd = 'light -A 5',
+  dec_brightness_cmd = 'light -U 5'
+})
+
+-- CPU Widget
+local cpu_ctr = require("awesome-wm-widgets.cpu-widget.cpu-widget")
+local cpu_widget = cpu_ctr({
+  enable_kill_button = true,
+  process_info_max_length = 50,
+  color = '#ff5200'
+})
+
+-- RAM Widget
+local ram_ctr = require("awesome-wm-widgets.ram-widget.ram-widget")
+local ram_widget = ram_ctr()
 
 awful.screen.connect_for_each_screen(function(s)
 
@@ -209,7 +240,7 @@ awful.screen.connect_for_each_screen(function(s)
     -- Each screen has its own tag table.
     local names = {"main", "www", "term", "music", "mail"}
     local l = awful.layout.suit
-    local layouts = { l.tile, l.tile, l.tile, l.tile, l.tile }
+    local layouts = { l.max, l.tile, l.max, l.tile, l.tile }
     awful.tag(names, s, layouts)
 
     -- Create a promptbox for each screen
@@ -242,10 +273,23 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            bat0,
+            sprtr,
+            spotify_widget,
+            sprtr,
+            cpu_widget,
+            sprtr,
+            ram_widget,
+            sprtr,
+            volumebar_widget,
+            sprtr,
+            batteryarc_widget,
+            sprtr,
+            brightness_widget,
+            sprtr,
             net_indicator,
+            sprtr,
             wibox.widget.systray(),
-            volumecfg.widget,
+            sprtr,
             mytextclock,
             s.mylayoutbox,
         },
@@ -350,7 +394,7 @@ globalkeys = gears.table.join(
               {description = "restore minimized", group = "client"}),
 
     -- Prompt
-    awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
+    awful.key({ modkey },            "r",     function () run_shell.launch() end,
               {description = "run prompt", group = "launcher"}),
 
     awful.key({ modkey }, "x",
@@ -378,7 +422,9 @@ globalkeys = gears.table.join(
     awful.key({ }, "XF86AudioNext", function ()
         awful.util.spawn_with_shell("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next") end),
     awful.key({ }, "XF86AudioPrev", function ()
-        awful.util.spawn_with_shell("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous") end)
+        awful.util.spawn_with_shell("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous") end),
+    awful.key({ }, "XF86MonBrightnessUp", function () awful.spawn("light -A 5") end),
+    awful.key({ }, "XF86MonBrightnessDown", function () awful.spawn("light -U 5") end)
     -- [WIP] Print Screen
     --awful.key({ }, "Print", function () scrnshot.all_screen() end,
     --          {description = "Print all screen", group = "screen"})
