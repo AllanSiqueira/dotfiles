@@ -78,7 +78,7 @@ if executable('ag')
   " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
   " let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
   let g:ctrlp_user_command =
-      \ 'ag %s --files-with-matches -g "" --ignore "\.git$\|\.hg$\|\.svn$"'
+      \ 'ag %s --files-with-matches -g "" --ignore "\.git\$\|\.hg\$\|\.svn\$"'
 
   " ag is fast enough that CtrlP doesn't need to cache
   let g:ctrlp_use_caching = 0
@@ -88,7 +88,7 @@ let g:ctrlp_by_filename = 1
 
 " Make it obvious where 80 characters is
 set textwidth=80
-set colorcolumn=+1
+set colorcolumn=81,101
 
 " Numbers
 set number
@@ -140,6 +140,12 @@ if has('persistent_undo')
   set undofile
 endif
 
+augroup VimCSS3Syntax
+    autocmd!
+
+      autocmd FileType css setlocal iskeyword+=-
+    augroup END
+augroup END
 
 let is_tmux = $TMUX
 if is_tmux != ""
@@ -150,7 +156,8 @@ let g:solarized_termtrans=1
 syntax enable
 set background=dark
 colorscheme solarized
-
+let g:vim_jsx_pretty_colorful_config=1
+let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown'}]
 if filereadable(expand("./bin/rspec"))
   let g:rspec_command = "VtrSendCommandToRunner! ./bin/rspec {spec}"
 else

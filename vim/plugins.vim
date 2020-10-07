@@ -30,6 +30,16 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-repeat'
 Plug 'wakatime/vim-wakatime'
 Plug 'mattn/emmet-vim'
+Plug 'elixir-editors/vim-elixir'
+Plug 'yuezk/vim-js'
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'styled-components/vim-styled-components', { 'branch': 'main'  }
+Plug 'pangloss/vim-javascript'
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'jparise/vim-graphql'
+Plug 'vimwiki/vimwiki'
+Plug 'zxqfl/tabnine-vim'
 
 if filereadable(expand("~/.plugins.vim.local"))
   source ~/.plugins.vim.local
