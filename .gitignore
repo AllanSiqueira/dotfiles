@@ -1,0 +1,5 @@
+vim/backups
+vim/bundle
+fish/fish_variables
+vim/pack
+fish/conf.d/env_vars.local.fish
