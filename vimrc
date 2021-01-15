@@ -88,7 +88,7 @@ let g:ctrlp_by_filename = 1
 
 " Make it obvious where 80 characters is
 set textwidth=80
-set colorcolumn=81,101
+set colorcolumn=81,101,111
 
 " Numbers
 set number

@@ -11,7 +11,7 @@ Plug 'scrooloose/nerdtree' " file explorer
 Plug 'ctrlpvim/ctrlp.vim' " fuzzy finder
 Plug 'pbrisbin/vim-mkdir' " create folder if it doesn't exist
 Plug 'scrooloose/syntastic' " syntax checking
-Plug 'thoughtbot/vim-rspec'
+Plug 'common-nighthawk/vim-rspec'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-git'
@@ -39,7 +39,6 @@ Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'jparise/vim-graphql'
 Plug 'vimwiki/vimwiki'
-Plug 'zxqfl/tabnine-vim'
 
 if filereadable(expand("~/.plugins.vim.local"))
   source ~/.plugins.vim.local
