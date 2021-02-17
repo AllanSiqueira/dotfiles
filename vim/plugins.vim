@@ -10,7 +10,7 @@ Plug 'skwp/vim-colors-solarized'
 Plug 'scrooloose/nerdtree' " file explorer
 Plug 'ctrlpvim/ctrlp.vim' " fuzzy finder
 Plug 'pbrisbin/vim-mkdir' " create folder if it doesn't exist
-Plug 'scrooloose/syntastic' " syntax checking
+Plug 'vim-syntastic/syntastic' " syntax checking
 Plug 'common-nighthawk/vim-rspec'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-fugitive'

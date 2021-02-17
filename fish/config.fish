@@ -1,1 +1,1 @@
-rvm default
+source ~/.asdf/asdf.fish

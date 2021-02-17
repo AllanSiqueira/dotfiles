@@ -42,6 +42,8 @@ function __ruby_version
     set ruby_version (rvm-prompt i v g)
   else if type "rbenv" > /dev/null 2>&1
     set ruby_version (rbenv version-name)
+  else if type "asdf" > /dev/null 2>&1
+    set ruby_version (asdf current ruby | awk '{print $2}')
   else
     set ruby_version "system"
   end
